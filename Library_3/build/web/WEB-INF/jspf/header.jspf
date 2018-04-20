@@ -1,0 +1,72 @@
+<%-- any content can be specified here e.g.: --%>
+<%@ page pageEncoding="UTF-8" %>
+<html>
+    <%request.setCharacterEncoding("UTF-8");%>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>JSP Page</title>
+        <link rel="stylesheet" type="text/css" href="../css/main.css">
+    </head>
+    <body>
+        
+        <%
+            if(request.getSession().isNew()){
+                response.sendRedirect("../index.jsp");
+            }
+            
+            if (request.getParameter("username") != null) {
+                request.getSession(false).setAttribute("username", request.getParameter("username"));
+            }
+        %>
+        <div id="header">
+            <img class="logo" src="../images/library_ico.png" width="100px" height="100px">
+            <p class="logo">Онлайн<br>библиотека</p>
+            <div id="welcome">Добро пожаловать, <%= " " + request.getSession(false).getAttribute("username")%></div>
+        </div>
+
+
+        <div id="search">
+            <img src="../images/search.png" width="25px" height="25px">
+            <form name="search_form" method="get" action="../pages/book.jsp">
+                <input id="search_input" type="search" name="search" value="<%if (request.getParameter("search") != null) {%><%=request.getParameter("search")%><%}%>">
+                <input id="search_button" type="submit" value="Искать">
+
+                <%if (request.getParameter("select") == null) {%>
+                <select name="select">
+                    <option>Название</option>
+                    <option>Автор</option>
+                </select>
+                <%} else if (request.getParameter("select").equals("Название")) {%>
+                <select name="select">
+                    <option selected>Название</option>
+                    <option>Автор</option>
+                </select>
+                <%} else if (request.getParameter("select").equals("Автор")) {%>
+                <select name="select">
+                    <option>Название</option>
+                    <option selected>Автор</option>
+                </select>
+                <%}%>
+            </form>
+
+        </div>
+        <div id="alphabet">
+            <%char alphabet[] = {'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О',
+                    'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Э', 'Ю', 'Я'};
+                char alphabetSelected = ' ';
+                if (request.getParameter("letter") != null) {
+                    alphabetSelected = request.getParameter("letter").charAt(0);
+                } else if (session.getAttribute("alphabetLetter") != null) {
+                    alphabetSelected = (Character) session.getAttribute("alphabetLetter");
+                }
+
+                session.setAttribute("alphabetSelected", alphabetSelected);
+            %>
+            <%for (int i = 0; i < alphabet.length; i++) {%>
+            <%if (alphabetSelected != ' ' && alphabetSelected == alphabet[i]) {%>
+            <a style="font-size: 20px" id="alphabet_links" href="../pages/book.jsp?letter=<%=alphabet[i]%>"><%=alphabet[i]%></a>
+            <%} else {%>
+            <a id="alphabet_links" href="../pages/book.jsp?letter=<%=alphabet[i]%>"><%=alphabet[i]%></a>
+            <%}%>
+            <%}%>
+        </div>
