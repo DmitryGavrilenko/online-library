@@ -50,7 +50,7 @@ public class GetBook extends HttpServlet {
                 response.setContentLength(book.getContent().length);
                 out.write(book.getContent());
             } catch (NullPointerException exc) {
-                System.out.println("");
+                System.out.println(exc);
             }
         }
     }
