@@ -1,4 +1,4 @@
-/*
+﻿/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -50,7 +50,7 @@ public class GetBook extends HttpServlet {
                 response.setContentLength(book.getContent().length);
                 out.write(book.getContent());
             } catch (NullPointerException exc) {
-                System.out.println("НОЛЬ");
+                System.out.println(exc);
             }
         }
     }
